@@ -1,7 +1,8 @@
 const links = [
-  { id: 1, href: "#progress", text: "Progress" },
-  { id: 2, href: "#distribution", text: "Distribution" },
-  { id: 3, href: "#transcript", text: "Transcript" },
+  { id: 1, href: "#progress", text: "Academic Progress" },
+  { id: 2, href: "#update-courses", text: "Update Courses" },
+  { id: 3, href: "#distribution", text: "Credits Distribution" },
+  { id: 4, href: "#transcript", text: "Transcript" },
 ];
 
 export default function DashboardHeader() {
