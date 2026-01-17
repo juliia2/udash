@@ -1,6 +1,7 @@
-NAME HERE is an application designed to simplify student life. It provides a one page over look of the courses you have taken, are currently taking, and need to. NAME HERE was created with Python and React.  
+# Welcome!
+NAME HERE is an application designed to simplify student life. It provides a one page over look of the courses you have taken, are currently taking, and need to. NAME HERE was created with Python and React for the uOttaHack 8!
 
-# React + Vite
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
