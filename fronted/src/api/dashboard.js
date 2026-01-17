@@ -13,6 +13,7 @@ function normalizeDashboard(raw) {
   const completed = Array.isArray(reqObj.completed) ? reqObj.completed : [];
   const inProgress = Array.isArray(reqObj.in_progress) ? reqObj.in_progress : [];
   const toDo = Array.isArray(raw?.to_do) ? raw.to_do : [];
+  const electives = Array.isArray(raw?.electives) ? raw.electives : [];
 
   // Courses user can pick to add as completed/in-progress:
   // (everything not already completed/in_progress)
@@ -31,13 +32,15 @@ function normalizeDashboard(raw) {
   // Otherwise you can return 120 as default.
   const requiredCredits = 120;
 
+
+  const requiredElectiveUnits = getTotalElectiveUnits(electives);
   // Requirements breakdown card expects array with {label, done, req}
   // You can improve these numbers later with real program requirements.
   const requirements = [
     { label: "Completed Courses", done: completed.length, req: completed.length + inProgress.length + toDo.length },
     { label: "In Progress", done: inProgress.length, req: completed.length + inProgress.length + toDo.length },
     { label: "To Do", done: toDo.length, req: completed.length + inProgress.length + toDo.length },
-    { label: "Electives", done: (Array.isArray(reqObj.electives) ? reqObj.electives.length : 0), req: 0 },
+    { label: "Electives", done: electives.length, req: requiredElectiveUnits },
   ];
 
   return {
@@ -59,10 +62,16 @@ function normalizeDashboard(raw) {
   };
 }
 
+function getTotalElectiveUnits(electives) {
+  return electives.reduce((sum, e) => sum + (e.units || 0), 0);
+}
+
 export async function fetchDashboardView() {
   const res = await fetch(`${API}/api/dashboard`);
   if (!res.ok) throw new Error("Failed to load dashboard");
   const raw = await res.json();
+
+  console.log("Raw dashboard data:", raw);
   return normalizeDashboard(raw);
 }
 
