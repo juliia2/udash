@@ -188,7 +188,6 @@ degree_requirements = [
         }
     },
 
-
     {
         "id": "non_comp_math",
         "units": 27,
@@ -217,18 +216,12 @@ def compute_todo(requirements):
         and course not in requirements["in_progress"]
     ]
 
-
-
 def get_all_data(requirements, course_grades):
     return {
         "requirements": requirements,
         "to_do": compute_todo(requirements),
         "course_grades": course_grades,
-        "cgpa": calculate_cgpa(course_grades),
-        "electives": [
-            r for r in degree_requirements
-            if r.get("type") in ["free_elective", "category_total", "optional_pool"]
-        ]
+        "cgpa": calculate_cgpa(course_grades)
     }
 
 
