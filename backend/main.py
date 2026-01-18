@@ -59,42 +59,7 @@ class GradePayload(BaseModel):
     course: str
     grade: str
 
-## >> app.jsx for later
-'''
-import { useEffect, useState } from "react";
 
-function App() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/data")
-      .then(res => res.json())
-      .then(data => setItems(data.items));
-  }, []);
-
-  const handleUpdate = () => {
-    fetch("http://localhost:5000/api/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items })
-    })
-    .then(res => res.json())
-    .then(console.log);
-  };
-
-  return (
-    <div>
-      <ul>
-        {items.map((i, idx) => <li key={idx}>{i}</li>)}
-      </ul>
-      <button onClick={handleUpdate}>Send to Python</button>
-    </div>
-  );
-}
-
-export default App;
-
-'''
 
 # to run: uvicorn main:app --reload --port 5000
 
@@ -109,15 +74,16 @@ required_courses=['ENG 1112', 'ITI 1100', 'ITI 1120',
                   'SEG 2105', 'CSI 3104', 'CSI 3105', 
                   'CSI 3120', 'CSI 3131', 'CSI 3140', 
                   'CEG 3185', 'CSI 4900']
+
 requirements_EXAMPLE = {
     "completed": [required_courses[0]], ## 
     "in_progress": [required_courses[1]], }
 
-requirements = {
+progress = {
     "completed": [],
     "in_progress": [],
-    "to do": [],
-    "electives": []
+    #"to do": [],
+    #"electives": []
 }
 
 
@@ -210,17 +176,18 @@ degree_requirements = [
 
 # FUNCTIONS
 
-def compute_todo(requirements):
-    return [
-        course for course in required_courses
-        if course not in requirements["completed"]
-        and course not in requirements["in_progress"]
-    ]
+# def compute_todo(progress):
+#     return [
+#         course for course in required_courses
+#         if course not in progress["completed"]
+#         and course not in progress["in_progress"]
+#     ]
 
-def get_all_data(requirements, course_grades):
+def get_all_data(progress, course_grades):
     return {
-        "requirements": requirements,
-        "to_do": compute_todo(requirements),
+        "required_courses": required_courses,
+        "requirements": progress,
+        #"to_do": compute_todo(progress),
         "course_grades": course_grades,
         "cgpa": calculate_cgpa(course_grades),
         "electives": [
@@ -231,23 +198,23 @@ def get_all_data(requirements, course_grades):
     }
 
 
-def add_completed_course(requirements, course_code):
-    if course_code not in requirements["completed"]:
-        requirements["completed"].append(course_code)
+def add_completed_course(progress, course_code):
+    if course_code not in progress["completed"]:
+        progress["completed"].append(course_code)
 
-    if course_code in requirements["in_progress"]:
-        requirements["in_progress"].remove(course_code)
-        
-    return requirements
+    if course_code in progress["in_progress"]:
+        progress["in_progress"].remove(course_code)
 
-def add_in_progress_course(requirements, course_code):
-    if course_code not in requirements["in_progress"]:
-        requirements["in_progress"].append(course_code)
+    return progress 
 
-    if course_code in requirements["completed"]:
-        requirements["completed"].remove(course_code)
-        
-    return requirements
+def add_in_progress_course(progress, course_code):
+    if course_code not in progress["in_progress"]:
+        progress["in_progress"].append(course_code)
+
+    if course_code in progress["completed"]:
+        progress["completed"].remove(course_code)
+
+    return progress
 
 # make dictionary of courses with their grades
 def add_course_grade(course_grades, course_code, grade):
@@ -298,7 +265,7 @@ def calculate_cgpa(course_grades):
 # ---------- FASTAPI ENDPOINTS ----------
 @app.get("/api/dashboard")
 def api_get_dashboard():
-    return get_all_data(requirements, course_grades)
+    return get_all_data(progress, course_grades)
 
 @app.get("/api/degree_requirements")
 def api_get_degree_requirements():
@@ -308,13 +275,13 @@ def api_get_degree_requirements():
 
 @app.post("/api/add_completed")
 def api_add_completed(payload: CoursePayload):
-    add_completed_course(requirements, payload.course)
+    add_completed_course(progress, payload.course)
     return {"status": "ok"}
 
 @app.post("/api/add_in_progress")
 def api_add_in_progress(payload: CoursePayload):
     course = payload.course
-    add_in_progress_course(requirements, course)
+    add_in_progress_course(progress, course)
     return {"status": "ok"}
 
 # @app.get("/api/cgpa")

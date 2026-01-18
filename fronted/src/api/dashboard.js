@@ -9,15 +9,21 @@ function normalizeDashboard(raw) {
   //   cgpa: 0.0
   // }
 
-  const reqObj = raw?.requirements ?? {};
+  const reqObj = raw?.progress ?? {};
+  console.log("Raw requirements object:", reqObj);
+
   const completed = Array.isArray(reqObj.completed) ? reqObj.completed : [];
   const inProgress = Array.isArray(reqObj.in_progress) ? reqObj.in_progress : [];
-  const toDo = Array.isArray(raw?.to_do) ? raw.to_do : [];
+  //*const toDo = Array.isArray(raw?.to_do) ? raw.to_do : [];
   const electives = Array.isArray(raw?.electives) ? raw.electives : [];
 
   // Courses user can pick to add as completed/in-progress:
   // (everything not already completed/in_progress)
-  const availableCourses = toDo;
+  //*const availableCourses = toDo;
+  const requiredCourses = raw.required_courses ?? [];
+  const availableCourses = requiredCourses.filter(
+    (course) => !completed.includes(course) && !inProgress.includes(course)
+  );
 
   // UI expectations:
   // - completedCourses: array for grade dropdown
@@ -30,16 +36,16 @@ function normalizeDashboard(raw) {
 
   // If you know your program total credits, set it here.
   // Otherwise you can return 120 as default.
-  const requiredCredits = 120;
+  const requiredCredits = 120; // TO DO: CHANGE TO SUM OF PROGRAM REQUIREMENTS
 
 
   const requiredElectiveUnits = getTotalElectiveUnits(electives);
   // Requirements breakdown card expects array with {label, done, req}
   // You can improve these numbers later with real program requirements.
   const requirements = [
-    { label: "Completed Courses", done: completed.length, req: completed.length + inProgress.length + toDo.length },
-    { label: "In Progress", done: inProgress.length, req: completed.length + inProgress.length + toDo.length },
-    { label: "To Do", done: toDo.length, req: completed.length + inProgress.length + toDo.length },
+    { label: "Required Courses", done: completed.length, req: completed.length + inProgress.length + availableCourses.length },
+    { label: "In Progress", done: inProgress.length, req: completed.length + inProgress.length + availableCourses.length },
+    //*{ label: "To Do", done: toDo.length, req: completed.length + inProgress.length + toDo.length },
     { label: "Electives", done: electives.length, req: requiredElectiveUnits },
   ];
 
@@ -47,7 +53,6 @@ function normalizeDashboard(raw) {
     // what DashboardPage uses
     requirements,
     transcriptYears: [],
-
     requiredCredits,
     completedCredits,
     cumulativeGPA: Number(raw?.cgpa ?? 0),
