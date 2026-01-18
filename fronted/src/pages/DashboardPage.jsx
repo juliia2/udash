@@ -5,6 +5,8 @@ import CreditsDistributionCard from "../components/dashboard/CreditsDistribution
 import AcademicProgressCard from "../components/dashboard/AcademicProgressCard.jsx";
 import TranscriptCard from "../components/dashboard/TranscriptCard.jsx";
 import DashboardHeader from "../components/dashboard/DashboardHeader.jsx";
+import ScrollToTopButton from "../components/dashboard/ScrollToTopButton.jsx";
+
 
 export default function DashboardPage() {
   const [ui, setUi] = useState(null);
@@ -114,6 +116,8 @@ export default function DashboardPage() {
           />
         </section>
       </div>
+
+      <ScrollToTopButton />
     </div>
   );
 }
