@@ -395,7 +395,7 @@ def build_transcript_years(requirements, course_grades):
             
             courses_data.append({
                 "code": course_code,
-                "name": course_code,  # user-added electives use code as name
+                #"name": course_code,  # user-added electives use code as name
                 "category": "Electives",
                 "credits": credits,
                 "grade": grade,
