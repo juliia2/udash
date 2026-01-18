@@ -1,14 +1,11 @@
-const API = import.meta.env.VITE_API_URL;
+const API = import.meta.env.VITE_API_URL.replace(/\/$/, ""); // remove trailing slash
 
-/**
- * Fetch the full dashboard state.
- * Backend must return UI-ready data.
- */
 export async function fetchDashboardView() {
   const res = await fetch(`${API}/api/dashboard`);
   if (!res.ok) throw new Error("Failed to load dashboard");
   return res.json();
 }
+
 
 /**
  * Mark a course as completed.
