@@ -91,7 +91,7 @@ export default function DashboardPage() {
             <div className="h-full w-full">
               <CourseActionsCard
                 availableCourses={ui.availableCourses || []}
-                completedCourses={ui.completedCourses || []}
+                completedCourses={ui.completedCredits || []}
                 onUpdated={load}
               />
             </div>

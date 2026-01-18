@@ -140,7 +140,7 @@ required_courses=['ENG 1112', 'ITI 1100', 'ITI 1120',
                   'CSI 3120', 'CSI 3131', 'CSI 3140', 
                   'CEG 3185', 'CSI 4900']
 
-required_courses_units = len(required_courses)
+required_courses_units = len(required_courses) *3  # assuming each course is 3 units
 requirements_EXAMPLE = {
     "completed": [required_courses[0]], ## 
     "in_progress": [required_courses[1]], }
@@ -451,7 +451,7 @@ def api_get_dashboard():
         {
             "label": "Required Courses",
             "done": len(required_completed),
-            "req": len(required_courses),
+            "req": required_courses_units,
         },
         {
             "label": "In Progress",
@@ -475,9 +475,10 @@ def api_get_dashboard():
 
         "availableCourses": availableCourses,
         "completedCourses": completed,
+        #"completedReqCredits": len(completed) * creditsPerCourse,
         "inProgressCourses": in_progress,
 
-        "transcriptYears": build_transcript_years(requirements, course_grades),  # ✅ now dynamic
+        "transcriptYears": build_transcript_years(requirements, course_grades),  # now dynamic
 
         # optional debug
         "electives": electives,
