@@ -1,10 +1,11 @@
 
-// The Bulletproof way:
-// This works whether API is "https://site.com/" or "https://site.com"
-const getUrl = (path) => new URL(path, import.meta.env.VITE_API_URL).href;
+/// This cleans the string immediately when the app loads
+const API = import.meta.env.VITE_API_URL.replace(/\/$/, "");
 
-// Usage:
-const response = await fetch(getUrl('/api/dashboard'));
+// Now this will ALWAYS result in a single slash
+const url = `${API}/api/dashboard`;
+console.log("Checking URL:", url); // Open your browser console to verify!
+
 export async function fetchDashboardView() {
   const res = await fetch(`${API}/api/dashboard`);
   if (!res.ok) throw new Error("Failed to load dashboard");
