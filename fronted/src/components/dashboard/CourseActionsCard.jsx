@@ -1,8 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { addCompleted, addInProgress, addGrade } from "../../api/dashboard";
+import { addCompleted, addInProgress, addGrade, addElective } from "../../api/dashboard";
 import Card from "./ui/Card";
 
-const GRADES = ["A+", "A", "A-", "B+", "B", "C+", "C", "D+", "D", "E", "F", "ABS", "EIN"];
+const GRADES = [
+  "A+",
+  "A",
+  "A-",
+  "B+",
+  "B",
+  "C+",
+  "C",
+  "D+",
+  "D",
+  "E",
+  "F",
+  "ABS",
+  "EIN",
+];
 
 export default function CourseActionsCard({
   availableCourses = [],
@@ -22,15 +36,15 @@ export default function CourseActionsCard({
   // Keep selections valid when backend data changes
   useEffect(() => {
     setCourse((prev) =>
-      availableCourses.includes(prev) ? prev : (availableCourses[0] || "")
+      availableCourses.includes(prev) ? prev : availableCourses[0] || ""
     );
 
     setInProgCourse((prev) =>
-      availableCourses.includes(prev) ? prev : (availableCourses[0] || "")
+      availableCourses.includes(prev) ? prev : availableCourses[0] || ""
     );
 
     setGradeCourse((prev) =>
-      completedCourses.includes(prev) ? prev : (completedCourses[0] || "")
+      completedCourses.includes(prev) ? prev : completedCourses[0] || ""
     );
   }, [availableCourses, completedCourses]);
 
@@ -62,28 +76,15 @@ export default function CourseActionsCard({
       return;
     }
 
-    const credits = parseInt(electiveCredits);
+    const credits = parseInt(electiveCredits, 10);
     if (isNaN(credits) || credits <= 0) {
       setStatus("Please enter valid credits");
       return;
     }
 
     await run(async () => {
-      // You'll need to implement this API endpoint
-      const response = await fetch("/api/dashboard/elective", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          courseName: electiveName.trim(),
-          credits,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to add elective");
-      }
-
+      // Use the imported addElective function instead of direct fetch
+      await addElective(electiveName.trim(), credits);
       setElectiveName("");
       setElectiveCredits("3");
     });

@@ -1,12 +1,14 @@
 import RequirementRow from "./RequirementRow";
 
-export default function RequirementsBreakdown({ requirements = [] }) {
+export default function RequirementsBreakdown({ requirements = [],
+  requiredCredits = 0,
+  completedCredits = 0, }) {
   const safeRequirements = Array.isArray(requirements) ? requirements : [];
 
   // Calculate totals
-  const done = safeRequirements.reduce((sum, r) => sum + (Number(r.done) || 0), 0);
-  const req = safeRequirements.reduce((sum, r) => sum + (Number(r.req) || 0), 0);
-  const remaining = Math.max(0, req - done);
+  const done = Number(completedCredits) || 0;
+const req = Number(requiredCredits) || 0;
+const remaining = Math.max(0, req - done);
 
   if (safeRequirements.length === 0) {
     return (

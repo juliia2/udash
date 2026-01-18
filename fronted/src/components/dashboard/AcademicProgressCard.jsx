@@ -39,7 +39,11 @@ export default function AcademicProgressCard({
 
       {/* Requirements Breakdown */}
       <div className="mt-10">
-        <RequirementsBreakdown requirements={safeRequirements} />
+        <RequirementsBreakdown
+  requirements={safeRequirements}
+  requiredCredits={req}
+  completedCredits={done}
+/>
       </div>
     </Card>
   );
