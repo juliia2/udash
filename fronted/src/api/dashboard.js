@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 
 let userId = localStorage.getItem("userId");
 if (!userId) {
-  userId = uuidv4(); // generate a unique id
+  userId = crypto.randomUUID(); // generate a unique id
   localStorage.setItem("userId", userId);
 }
 
