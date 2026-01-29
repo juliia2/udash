@@ -1,4 +1,4 @@
-#🎓 uDash — Academic Progress Tracker 
+🎓 uDash — Academic Progress Tracker 
 ---
 See the live demo at [u-dash.tech](https://u-dash.tech/)!
 (P.S. taking a while to load? check the backend [here](https://udash-ihdr.onrender.com/))
