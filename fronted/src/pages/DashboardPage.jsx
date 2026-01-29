@@ -6,6 +6,7 @@ import AcademicProgressCard from "../components/dashboard/AcademicProgressCard.j
 import TranscriptCard from "../components/dashboard/TranscriptCard.jsx";
 import DashboardHeader from "../components/dashboard/DashboardHeader.jsx";
 import ScrollToTopButton from "../components/dashboard/ScrollToTopButton.jsx";
+import { resetAll } from "../api/dashboard";
 
 export default function DashboardPage() {
   const [ui, setUi] = useState(null);
