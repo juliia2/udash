@@ -113,7 +113,7 @@ export default function CreditsDistributionCard({ requirements = [] }) {
         </ResponsiveContainer>
 
         {/* Center KPI */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <div className="text-3xl font-extrabold text-slate-900">
               {totals.totalPct}%
